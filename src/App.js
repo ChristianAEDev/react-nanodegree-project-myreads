@@ -33,17 +33,28 @@ class BooksApp extends React.Component {
    * Allows to mave a book from one shelf to another shelf
    */
   onMoveBook(selectedBook, targetShelf) {
+
+    // Find the index of the selected book
+    let indexSelectedBook = this.state.books.findIndex(v => v.id === selectedBook.id);
+        console.log(indexSelectedBook)
+    //If the index of the book is "-1" it is a book which is currently in no shelf
+    if (indexSelectedBook === -1) {
+      console.log("New book")
+      this.setState(state => ({
+        books: state.books.concat(selectedBook)
+      }))
+      console.log(this.state.books);
+    }
+
+
     //If the new state is "none" we just want to remove it from the books array
-    if (targetShelf === SHELF_NONE) {
+    else if (targetShelf === SHELF_NONE) {
       this.setState(state => ({
         books: state.books.filter(book => book.id !== selectedBook.id)
       }))
     }
     // Otherwise we move the book to the target shelf
     else {
-      // Find the index of the selected book
-      let indexSelectedBook = this.state.books.findIndex(v => v.id === selectedBook.id);
-
       // Update the book in the shelf
       this.state.books[indexSelectedBook].shelf = targetShelf;
 
@@ -86,7 +97,9 @@ class BooksApp extends React.Component {
           </div>
         )} />
         <Route path="/search" render={() => (
-          <Search />
+          <Search
+            onMoveBook={this.onMoveBook}
+          />
         )} />
       </div>
     )

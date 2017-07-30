@@ -42,7 +42,7 @@ class Search extends Component {
                     <Shelf
                         books={this.state.searchResult}
                         shelfTitle="Search Result"
-                        onMoveBook={() => console.log("onMoveBook")}
+                        onMoveBook={this.props.onMoveBook}
                     />
                 </div>
             </div>
