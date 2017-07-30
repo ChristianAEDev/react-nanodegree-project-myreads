@@ -5,9 +5,10 @@ import Search from "./components/search";
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 
-const SHELF_CURRENTLY_READING = "currentlyReading";
-const SHELF_WANT_TO_READ = "wantToRead";
-const SHELF_READ = "read";
+const SHELF_CURRENTLY_READING = "Currently Reading";
+const SHELF_WANT_TO_READ = "Want to Read";
+const SHELF_READ = "Read";
+const SHELF_NONE = "None";
 
 class BooksApp extends React.Component {
   constructor(props) {
@@ -26,6 +27,13 @@ class BooksApp extends React.Component {
     }
   }
 
+  /**
+   * Allows to mave a book from one shelf to another shelf
+   */
+  onMoveBook(book, targetShelf) {
+    console.log("Move book " + book.title + " from " + book.shelf + " to " + targetShelf);
+  }
+
   render() {
     return (
       <div className="app">
@@ -38,14 +46,17 @@ class BooksApp extends React.Component {
               <Shelf
                 books={this.state.books.filter(book => book.shelf === SHELF_CURRENTLY_READING)}
                 shelfTitle="Currently Reading"
+                onMoveBook={this.onMoveBook}
               />
               <Shelf
                 books={this.state.books.filter(book => book.shelf === SHELF_WANT_TO_READ)}
                 shelfTitle="Want to Read"
+                onMoveBook={this.onMoveBook}
               />
               <Shelf
                 books={this.state.books.filter(book => book.shelf === SHELF_READ)}
                 shelfTitle="Read"
+                onMoveBook={this.onMoveBook}
               />
             </div>
             <div className="open-search">
