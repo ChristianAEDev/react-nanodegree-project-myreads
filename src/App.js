@@ -25,13 +25,34 @@ class BooksApp extends React.Component {
         { id: "7", title: "The Adventures of Tom Sawyer", author: "Mark Twain", shelf: SHELF_READ, coverURL: "http://books.google.com/books/content?id=32haAAAAMAAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE72yckZ5f5bDFVIf7BGPbjA0KYYtlQ__nWB-hI_YZmZ-fScYwFy4O_fWOcPwf-pgv3pPQNJP_sT5J_xOUciD8WaKmevh1rUR-1jk7g1aCD_KeJaOpjVu0cm_11BBIUXdxbFkVMdi&source=gbs_api" }
       ]
     }
+
+    this.onMoveBook = this.onMoveBook.bind(this);
   }
 
   /**
    * Allows to mave a book from one shelf to another shelf
    */
-  onMoveBook(book, targetShelf) {
-    console.log("Move book " + book.title + " from " + book.shelf + " to " + targetShelf);
+  onMoveBook(selectedBook, targetShelf) {
+    //If the new state is "none" we just want to remove it from the books array
+    if (targetShelf === SHELF_NONE) {
+      this.setState(state => ({
+        books: state.books.filter(book => book.id !== selectedBook.id)
+      }))
+    }
+    // Otherwise we move the book to the target shelf
+    else {
+      // Find the index of the selected book
+      let indexSelectedBook = this.state.books.findIndex(v => v.id === selectedBook.id);
+
+      // Update the book in the shelf
+      this.state.books[indexSelectedBook].shelf = targetShelf;
+
+      this.setState(state => ({
+        // Replace the current book with our updated book
+        books: state.books
+      })
+      )
+    }
   }
 
   render() {
