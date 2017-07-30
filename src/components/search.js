@@ -1,18 +1,49 @@
 import React, { Component } from 'react';
+import Shelf from "./shelf";
+import * as BooksAPI from "../BooksAPI";
 
 class Search extends Component {
+
+    constructor() {
+        super();
+        this.state = {
+            searchQuery: "",
+            searchResult: []
+        }
+    }
+
+    onSearch(searchTerm) {
+        this.setState({ searchQuery: searchTerm })
+
+        BooksAPI.search(this.state.searchQuery, 20)
+            .then(result => {
+                this.setState({ searchResult: result })
+            })
+
+    }
+
     render() {
+        const { searchQuery } = this.state;
+
         return (
             <div className="search-books">
                 <div className="search-books-bar">
                     <a className="close-search" onClick={() => console.log("close search")}>Close</a>
                     <div className="search-books-input-wrapper">
-                        <input type="text" placeholder="Search by title or author" />
-
+                        <input
+                            value={searchQuery}
+                            type="text"
+                            placeholder="Search by title or author"
+                            onChange={event => this.onSearch(event.target.value)}
+                        />
                     </div>
                 </div>
                 <div className="search-books-results">
-                    <ol className="books-grid"></ol>
+                    <Shelf
+                        books={this.state.searchResult}
+                        shelfTitle="Search Result"
+                        onMoveBook={() => console.log("onMoveBook")}
+                    />
                 </div>
             </div>
         );

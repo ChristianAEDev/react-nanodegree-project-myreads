@@ -4,11 +4,12 @@ import { SHELF_CURRENTLY_READING, SHELF_WANT_TO_READ, SHELF_READ, SHELF_NONE } f
 class Book extends Component {
     render() {
         const { book } = this.props;
+        
         return (
             <li>
                 <div className="book">
                     <div className="book-top">
-                        <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url("${book.coverURL}")` }}></div>
+                        <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url("${book.imageLinks.smallThumbnail}")` }}></div>
                         <div className="book-shelf-changer">
                             <select defaultValue={book.shelf} onChange={(e) => this.props.onMoveBook(book, e.target.value)}>
                                 <option disabled>Move to...</option>
