@@ -1,4 +1,5 @@
 import React from 'react'
+import { Route } from "react-router-dom";
 import Shelf from "./components/shelf";
 import Search from "./components/search";
 import * as BooksAPI from './BooksAPI'
@@ -28,27 +29,33 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-        <div className="list-books">
-          <div className="list-books-title">
-            <h1>MyReads</h1>
+        <Route exact path="/" render={({ history }) => (
+          <div>
+            <div className="list-books">
+              <div className="list-books-title">
+                <h1>MyReads</h1>
+              </div>
+              <Shelf
+                books={this.state.books.filter(book => book.shelf === SHELF_CURRENTLY_READING)}
+                shelfTitle="Currently Reading"
+              />
+              <Shelf
+                books={this.state.books.filter(book => book.shelf === SHELF_WANT_TO_READ)}
+                shelfTitle="Want to Read"
+              />
+              <Shelf
+                books={this.state.books.filter(book => book.shelf === SHELF_READ)}
+                shelfTitle="Read"
+              />
+            </div>
+            <div className="open-search">
+              <a onClick={() => history.push("/search")}>Add a book</a>
+            </div>
           </div>
-          <Shelf
-            books={this.state.books.filter(book => book.shelf === SHELF_CURRENTLY_READING)}
-            shelfTitle="Currently Reading"
-          />
-          <Shelf
-            books={this.state.books.filter(book => book.shelf === SHELF_WANT_TO_READ)}
-            shelfTitle="Want to Read"
-          />
-          <Shelf
-            books={this.state.books.filter(book => book.shelf === SHELF_READ)}
-            shelfTitle="Read"
-          />
+        )} />
+        <Route path="/search" render={() => (
           <Search />
-        </div>
-        <div className="open-search">
-          <a onClick={() => console.log("open search")}>Add a book</a>
-        </div>
+        )} />
       </div>
     )
   }
