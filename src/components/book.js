@@ -13,10 +13,10 @@ class Book extends Component {
                         <div className="book-shelf-changer">
                             <select defaultValue={book.shelf} onChange={(e) => this.props.onMoveBook(book, e.target.value)}>
                                 <option disabled>Move to...</option>
-                                <option value={SHELF_CURRENTLY_READING}>Currently Reading</option>
-                                <option value={SHELF_WANT_TO_READ}>Want to Read</option>
-                                <option value={SHELF_READ}>Read</option>
-                                <option value={SHELF_NONE}>None</option>
+                                <option value={SHELF_CURRENTLY_READING}>currentlyReading</option>
+                                <option value={SHELF_WANT_TO_READ}>wantToRead</option>
+                                <option value={SHELF_READ}>read</option>
+                                <option value={SHELF_NONE}>none</option>
                             </select>
                         </div>
                     </div>

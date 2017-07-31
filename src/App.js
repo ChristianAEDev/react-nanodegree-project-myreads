@@ -22,7 +22,10 @@ class BooksApp extends React.Component {
 
   componentDidMount() {
     //Load the inital data set
-    BooksAPI.getAll().then(books => this.setState({ books }))
+    BooksAPI.getAll().then(books => {
+      console.log("books loaded: " + books)
+      this.setState({ books })
+    })
   }
 
   /**
@@ -32,6 +35,7 @@ class BooksApp extends React.Component {
 
     //If the shelf of the selectedBook is "none" it is new and we have to add it to the state
     if (selectedBook.shelf === SHELF_NONE) {
+      console.log("add new book")
       //Set the targetShelf of the book
       selectedBook.shelf = targetShelf;
 
@@ -43,15 +47,17 @@ class BooksApp extends React.Component {
     }
     // If the book already has a shelf and the targetShelf is not "none". We move it to the target shelf.
     else {
-      this.setState(oldState => {
-        BooksAPI.update(selectedBook, targetShelf)
+      console.log("move book to shelf " + targetShelf)
+      BooksAPI.update(selectedBook, targetShelf)
 
+      this.setState(oldState => ({
         books: oldState.books.map(book => {
           if (book.id === selectedBook.id) {
             book.shelf = targetShelf
           }
+          return book
         })
-      })
+      }))
     }
   }
 
