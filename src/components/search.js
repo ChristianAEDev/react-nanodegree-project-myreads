@@ -1,3 +1,4 @@
+import _ from "lodash";
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import Shelf from "./shelf";
@@ -18,9 +19,15 @@ class Search extends Component {
 
         BooksAPI.search(this.state.searchQuery, 20)
             .then(result => {
-                this.setState({ searchResult: result })
+                // Check that there is data in the result
+                if (result) {
+                    // Filter out already books available in one of the shelfs
+                    let booksAlreadyStored = _.keyBy(this.props.booksOnShelf, "id");
+                    this.setState(state => ({
+                        searchResult: result.filter(book => (typeof booksAlreadyStored[book.id] === 'undefined'))
+                    }))
+                }
             })
-
     }
 
     render() {
