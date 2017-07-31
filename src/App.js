@@ -5,9 +5,9 @@ import Search from "./components/search";
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 
-const SHELF_CURRENTLY_READING = "Currently Reading";
-const SHELF_WANT_TO_READ = "Want to Read";
-const SHELF_READ = "Read";
+const SHELF_CURRENTLY_READING = "currentlyReading";
+const SHELF_WANT_TO_READ = "wantToRead";
+const SHELF_READ = "read";
 const SHELF_NONE = "none";
 
 class BooksApp extends React.Component {
@@ -18,6 +18,11 @@ class BooksApp extends React.Component {
       books: []
     }
     this.onMoveBook = this.onMoveBook.bind(this);
+  }
+
+  componentDidMount() {
+    //Load the inital data set
+    BooksAPI.getAll().then(books => this.setState({ books }))
   }
 
   /**
@@ -33,11 +38,23 @@ class BooksApp extends React.Component {
       //Set the targetShelf of the book
       selectedBook.shelf = targetShelf;
 
-      BooksAPI.update(selectedBook, targetShelf)
+      BooksAPI.update(selectedBook, targetShelf).then(returnValue => (console.log(returnValue)))
 
       this.setState(state => ({
         books: state.books.concat([selectedBook])
       }))
+    }
+    // If the book already has a shelf and the targetShelf is not "none". We move it to the target shelf.
+    else {
+      this.setState(oldState => {
+        BooksAPI.update(selectedBook, targetShelf).then(returnValue => (console.log(returnValue)))
+
+        books: oldState.books.map(book => {
+          if (book.id === selectedBook.id) {
+            book.shelf = targetShelf
+          }
+        })
+      })
     }
 
 
