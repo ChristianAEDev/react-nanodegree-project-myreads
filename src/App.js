@@ -29,16 +29,13 @@ class BooksApp extends React.Component {
    * Allows to mave a book from one shelf to another shelf
    */
   onMoveBook(selectedBook, targetShelf) {
-    console.log("onMoveBook: Selected book: " + selectedBook.id + " - " + selectedBook.title + " / Target shelf: " + targetShelf);
 
     //If the shelf of the selectedBook is "none" it is new and we have to add it to the state
     if (selectedBook.shelf === SHELF_NONE) {
-      console.log("Add new book")
-
       //Set the targetShelf of the book
       selectedBook.shelf = targetShelf;
 
-      BooksAPI.update(selectedBook, targetShelf).then(returnValue => (console.log(returnValue)))
+      BooksAPI.update(selectedBook, targetShelf)
 
       this.setState(state => ({
         books: state.books.concat([selectedBook])
@@ -47,7 +44,7 @@ class BooksApp extends React.Component {
     // If the book already has a shelf and the targetShelf is not "none". We move it to the target shelf.
     else {
       this.setState(oldState => {
-        BooksAPI.update(selectedBook, targetShelf).then(returnValue => (console.log(returnValue)))
+        BooksAPI.update(selectedBook, targetShelf)
 
         books: oldState.books.map(book => {
           if (book.id === selectedBook.id) {
@@ -56,50 +53,9 @@ class BooksApp extends React.Component {
         })
       })
     }
-
-
-    // // Find the index of the selected book
-    // let indexSelectedBook = this.state.books.findIndex(v => v.id === selectedBook.id);
-
-    // //If the current shelf is "none" it is a new book from the search
-    // if (selectedBook.shelf === "none") {
-    //   console.log("add book")
-    //   selectedBook.shelf = targetShelf
-    //   this.setState(state => ({
-    //     books: state.books.concat([selectedBook])
-    //   }))
-    // }
-    // //If the new state is "none" we just want to remove it from the books array
-    // else if (targetShelf === SHELF_NONE) {
-    //   console.log("remove book")
-    //   console.log("selectedBook.id: " + selectedBook.id)
-    //   this.setState(state => ({
-    //     books: state.books.filter(book => {
-    //       console.log("book.id: " + book.id)
-    //       console.log("return: " + book.id === selectedBook.id)
-    //       return book.id === selectedBook.id
-    //     })
-    //   }))
-    //   console.log("after remove: " + JSON.stringify(this.state.books))
-    // }
-    // // Otherwise we move the book to the target shelf
-    // else {
-    //   console.log("move book")
-    //   // Update the book in the shelf
-    //   this.state.books[indexSelectedBook].shelf = targetShelf;
-
-    //   this.setState(state => ({
-    //     // Replace the current book with our updated book
-    //     books: state.books
-    //   })
-    //   )
-    // }
   }
 
   render() {
-
-    console.log("this.state.books: " + this.state.books)
-
     return (
       <div className="app">
         <Route exact path="/" render={({ history }) => (
