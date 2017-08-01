@@ -48,16 +48,26 @@ class BooksApp extends React.Component {
     // If the book already has a shelf and the targetShelf is not "none". We move it to the target shelf.
     else {
       console.log("move book to shelf " + targetShelf)
+
       BooksAPI.update(selectedBook, targetShelf)
 
-      this.setState(oldState => ({
-        books: oldState.books.map(book => {
-          if (book.id === selectedBook.id) {
-            book.shelf = targetShelf
-          }
-          return book
-        })
-      }))
+      //If the book is moved to the shelf "none" we have to remove it from the state
+      if (targetShelf === SHELF_NONE) {
+        this.setState(oldState => ({
+          books: oldState.books.filter(book => book.id !== selectedBook.id)
+        }))
+      }
+      //Otherwise we update the shelf of the book in the state
+      else {
+        this.setState(oldState => ({
+          books: oldState.books.map(book => {
+            if (book.id === selectedBook.id) {
+              book.shelf = targetShelf
+            }
+            return book
+          })
+        }))
+      }
     }
   }
 
