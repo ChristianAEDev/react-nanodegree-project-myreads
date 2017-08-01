@@ -17,18 +17,21 @@ class Search extends Component {
 
     onSearch(searchTerm) {
         this.setState({ searchQuery: searchTerm })
+        //Only search if we have something to search for
+        if (searchTerm.length > 1) {
 
-        BooksAPI.search(this.state.searchQuery, 20)
-            .then(result => {
-                // Check that there is data in the result
-                if (result) {
-                    // Filter out already books available in one of the shelfs
-                    let booksAlreadyStored = _.keyBy(this.props.booksOnShelf, "id");
-                    this.setState(state => ({
-                        searchResult: result.filter(book => (typeof booksAlreadyStored[book.id] === 'undefined'))
-                    }))
-                }
-            })
+            BooksAPI.search(this.state.searchQuery, 20)
+                .then(result => {
+                    // Check that there is data in the result
+                    if (result && result.length > 0) {
+                        // Filter out already books available in one of the shelfs
+                        let booksAlreadyStored = _.keyBy(this.props.booksOnShelf, "id");
+                        this.setState(state => ({
+                            searchResult: result.filter(book => (typeof booksAlreadyStored[book.id] === 'undefined'))
+                        }))
+                    }
+                })
+        }
     }
 
     /**
