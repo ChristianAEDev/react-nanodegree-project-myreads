@@ -60,6 +60,7 @@ class Search extends Component {
                             type="text"
                             placeholder="Search by title or author"
                             onChange={event => this.onSearch(event.target.value)}
+                            autoFocus={true}
                         />
                     </div>
                 </div>
