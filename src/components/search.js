@@ -12,6 +12,7 @@ class Search extends Component {
             searchQuery: "",
             searchResult: []
         }
+        this.onMoveBookInSearch = this.onMoveBookInSearch.bind(this);
     }
 
     onSearch(searchTerm) {
@@ -37,6 +38,23 @@ class Search extends Component {
         }
     }
 
+    /**
+     * This method is used when a book in the search is moved to a shelf.
+     */
+    onMoveBookInSearch(selectedBook, targetShelf) {
+
+        this.setState(currentState => ({
+            searchResult: currentState.searchResult.map(book => {
+                if (book.id === selectedBook.id) {
+                    book.shelf = targetShelf
+                }
+                return book
+            })
+        }))
+
+        this.props.onMoveBook(selectedBook, targetShelf)
+    }
+
     render() {
         const { searchQuery } = this.state;
 
@@ -58,7 +76,7 @@ class Search extends Component {
                     <Shelf
                         books={this.state.searchResult}
                         shelfTitle="Search Result"
-                        onMoveBook={this.props.onMoveBook}
+                        onMoveBook={this.onMoveBookInSearch}
                     />
                 </div>
             </div>
