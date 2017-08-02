@@ -8,6 +8,10 @@ body, .app {
   background: white;
 }
 
+.highlight-shelf{
+  font-weight: bold;
+}
+
 /* main page */
 
 .list-books-title {

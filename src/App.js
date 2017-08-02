@@ -5,10 +5,10 @@ import Search from "./components/search";
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 
-const SHELF_CURRENTLY_READING = "currentlyReading";
-const SHELF_WANT_TO_READ = "wantToRead";
-const SHELF_READ = "read";
-const SHELF_NONE = "none";
+export const SHELF_CURRENTLY_READING = "currentlyReading";
+export const SHELF_WANT_TO_READ = "wantToRead";
+export const SHELF_READ = "read";
+export const SHELF_NONE = "none";
 
 class BooksApp extends React.Component {
   constructor(props) {
@@ -31,7 +31,6 @@ class BooksApp extends React.Component {
    * Allows to mave a book from one shelf to another shelf
    */
   onMoveBook(selectedBook, targetShelf) {
-
     BooksAPI.update(selectedBook, targetShelf)
 
     //If the book is moved to the shelf "none" we have to remove it from the state
@@ -40,11 +39,17 @@ class BooksApp extends React.Component {
         books: oldState.books.filter(book => book.id !== selectedBook.id)
       }))
     }
+    //If the current shelf of the book is "none" it's new and we have to add it
+    else if (selectedBook.shelf === SHELF_NONE) {
+      selectedBook.shelf = targetShelf
+      this.setState(oldState => ({
+        books: oldState.books.concat([selectedBook])
+      }))
+    }
     //Otherwise we update the shelf of the book in the state
     else {
       this.setState(oldState => ({
         books: oldState.books.map(book => {
-          console.log(book.title + " - " + book.id)
           if (book.id === selectedBook.id) {
             book.shelf = targetShelf
           }

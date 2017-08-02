@@ -1,3 +1,4 @@
+import _ from "lodash";
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import Shelf from "./shelf";
@@ -22,8 +23,14 @@ class Search extends Component {
                 .then(result => {
                     // Check that there is data in the result
                     if (result && result.length > 0) {
+                        let booksAlreadyStored = _.keyBy(this.props.booksOnShelf, "id");
                         this.setState(state => ({
-                            searchResult: result
+                            searchResult: result.filter(book => {
+                                if (typeof booksAlreadyStored[book.id] !== 'undefined') {
+                                    book.shelf = booksAlreadyStored[book.id].shelf
+                                }
+                                return book
+                            })
                         }))
                     }
                 })
