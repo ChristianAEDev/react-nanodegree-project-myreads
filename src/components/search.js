@@ -11,7 +11,6 @@ class Search extends Component {
             searchQuery: "",
             searchResult: []
         }
-        this.onMoveBookInSearch = this.onMoveBookInSearch.bind(this);
     }
 
     onSearch(searchTerm) {
@@ -29,19 +28,6 @@ class Search extends Component {
                     }
                 })
         }
-    }
-
-    /**
-     * This method is used when a book in the search is moved to a shelf. It removes the book 
-     * from the state of the search and than calls the regular "onMoveBook" method.
-     */
-    onMoveBookInSearch(selectedBook, targetShelf) {
-
-        this.setState(currentState => ({
-            searchResult: currentState.searchResult.filter(book => book.id !== selectedBook.id)
-        }))
-
-        this.props.onMoveBook(selectedBook, targetShelf)
     }
 
     render() {
@@ -65,7 +51,7 @@ class Search extends Component {
                     <Shelf
                         books={this.state.searchResult}
                         shelfTitle="Search Result"
-                        onMoveBook={this.onMoveBookInSearch}
+                        onMoveBook={this.props.onMoveBook}
                     />
                 </div>
             </div>
