@@ -23,7 +23,8 @@ class Book extends Component {
                         </div>
                     </div>
                     <div className="book-title">{book.title}</div>
-                    <div className="book-authors">{book.author}</div>
+                    {/*If book.authors is true (truthy) they will be shown as a comma separated list.  */}
+                    <div className="book-authors">{book.authors && book.authors.join(', ')}</div>
                 </div>
             </li>
         )
