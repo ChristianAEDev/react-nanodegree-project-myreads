@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import shortid from "shortid";
 import Book from "./book";
 
 class Shelf extends Component {
@@ -12,7 +13,7 @@ class Shelf extends Component {
                         {/*Iterate of the books array passed by the paraent component to display each individual book.  */}
                         {books.map(book => (
                             <Book
-                                key={book.id}
+                                key={shortid.generate()}
                                 book={book}
                                 onMoveBook={onMoveBook}
                             />))}

@@ -24,7 +24,6 @@ class Search extends Component {
 
     executeSearch() {
         let { searchQuery } = this.state;
-        console.log(searchQuery)
 
         //Only search if we have something to search for
         if (searchQuery.length > 0) {
