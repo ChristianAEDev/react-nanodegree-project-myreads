@@ -16,25 +16,43 @@ class Search extends Component {
     }
 
     onSearch(searchTerm) {
-        this.setState({ searchQuery: searchTerm })
-        //Only search if we have something to search for
-        if (searchTerm.length > 1) {
+        this.setState(
+            { searchQuery: searchTerm },
+            _.debounce(this.executeSearch, 300)
+        )
+    }
 
-            BooksAPI.search(this.state.searchQuery, 20)
+    executeSearch() {
+        let { searchQuery } = this.state;
+        console.log(searchQuery)
+
+        //Only search if we have something to search for
+        if (searchQuery.length > 0) {
+            BooksAPI.search(searchQuery, 20)
                 .then(result => {
+
                     // Check that there is data in the result
-                    if (result && result.length > 0) {
-                        let booksAlreadyStored = _.keyBy(this.props.booksOnShelf, "id");
-                        this.setState(state => ({
-                            searchResult: result.filter(book => {
-                                if (typeof booksAlreadyStored[book.id] !== 'undefined') {
-                                    book.shelf = booksAlreadyStored[book.id].shelf
-                                }
-                                return book
-                            })
-                        }))
+                    if (result) {
+                        //Check if it contains an error, if so we clean the state
+                        if (result.error || result.length < 0) {
+                            this.setState({ searchResult: [] })
+                        }
+                        // Check that there is data in the result
+                        else {
+                            let booksAlreadyStored = _.keyBy(this.props.booksOnShelf, "id");
+                            this.setState(state => ({
+                                searchResult: result.filter(book => {
+                                    if (typeof booksAlreadyStored[book.id] !== 'undefined') {
+                                        book.shelf = booksAlreadyStored[book.id].shelf
+                                    }
+                                    return book
+                                })
+                            }))
+                        }
                     }
                 })
+        } else {
+            this.setState({ searchResult: [] })
         }
     }
 
@@ -45,14 +63,12 @@ class Search extends Component {
 
         this.setState(currentState => ({
             searchResult: currentState.searchResult.map(book => {
-                if (book.id === selectedBook.id) {
-                    book.shelf = targetShelf
-                }
+                // if (book.id === selectedBook.id) {
+                //     book.shelf = targetShelf
+                // }
                 return book
             })
-        }))
-
-        this.props.onMoveBook(selectedBook, targetShelf)
+        }), this.props.onMoveBook(selectedBook, targetShelf, true))
     }
 
     render() {
