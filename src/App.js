@@ -17,7 +17,6 @@ class BooksApp extends React.Component {
     this.state = {
       books: []
     }
-    this.onMoveBook = this.onMoveBook.bind(this);
   }
 
   componentDidMount() {
@@ -30,7 +29,7 @@ class BooksApp extends React.Component {
   /**
    * Allows to mave a book from one shelf to another shelf
    */
-  onMoveBook(selectedBook, targetShelf) {
+  onMoveBook = (selectedBook, targetShelf) => {
     BooksAPI.update(selectedBook, targetShelf)
 
     //If the book is moved to the shelf "none" we have to remove it from the state
@@ -49,7 +48,10 @@ class BooksApp extends React.Component {
       this.setState(oldState => ({
         books: oldState.books.map(book => {
           if (book.id === selectedBook.id) {
-            book.shelf = targetShelf
+            return {
+              ...book,
+              shelf: targetShelf
+            }
           }
           return book
         })
