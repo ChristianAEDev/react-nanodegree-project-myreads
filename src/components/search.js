@@ -72,7 +72,7 @@ class Search extends Component {
                 }
                 return book
             })
-        }), this.props.onMoveBook(selectedBook, targetShelf, true))
+        }), this.props.onMoveBook(selectedBook, targetShelf))
     }
 
     render() {

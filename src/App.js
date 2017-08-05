@@ -30,7 +30,7 @@ class BooksApp extends React.Component {
   /**
    * Allows to mave a book from one shelf to another shelf
    */
-  onMoveBook(selectedBook, targetShelf, newBook) {
+  onMoveBook(selectedBook, targetShelf) {
     BooksAPI.update(selectedBook, targetShelf)
 
     //If the book is moved to the shelf "none" we have to remove it from the state
@@ -38,7 +38,7 @@ class BooksApp extends React.Component {
       this.setState(oldState => ({
         books: oldState.books.filter(book => book.id !== selectedBook.id)
       }))
-    } else if (newBook) {
+    } else if (selectedBook.shelf === SHELF_NONE) {
       selectedBook.shelf = targetShelf
       this.setState(oldState => ({
         books: oldState.books.concat([selectedBook])
