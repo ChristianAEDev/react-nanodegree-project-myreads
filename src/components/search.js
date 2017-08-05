@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import Shelf from "./shelf";
 import * as BooksAPI from "../BooksAPI";
-
+import { SHELF_NONE } from "../App";
 class Search extends Component {
 
     constructor() {
@@ -43,6 +43,8 @@ class Search extends Component {
                                 searchResult: result.filter(book => {
                                     if (typeof booksAlreadyStored[book.id] !== 'undefined') {
                                         book.shelf = booksAlreadyStored[book.id].shelf
+                                    } else {
+                                        book.shelf = SHELF_NONE
                                     }
                                     return book
                                 })
