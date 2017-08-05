@@ -64,9 +64,12 @@ class Search extends Component {
 
         this.setState(currentState => ({
             searchResult: currentState.searchResult.map(book => {
-                // if (book.id === selectedBook.id) {
-                //     book.shelf = targetShelf
-                // }
+                if (book.id === selectedBook.id) {
+                    return {
+                        ...book,
+                        shelf: targetShelf
+                    }
+                }
                 return book
             })
         }), this.props.onMoveBook(selectedBook, targetShelf, true))
